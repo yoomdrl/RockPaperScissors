@@ -42,7 +42,7 @@ public class GameCountdown : MonoBehaviour
           }
           if(random == 2)
           {
-            Scissors.SetActive(true);
+            Scissors.SetActive(true);　
           }
         }
         if(countdown >= 0 && countdown <= 1)
