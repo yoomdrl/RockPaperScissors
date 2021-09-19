@@ -367,6 +367,7 @@ GameObject:
   - component: {fileID: 523929975}
   - component: {fileID: 523929977}
   - component: {fileID: 523929976}
+  - component: {fileID: 523929978}
   m_Layer: 5
   m_Name: ScoreText
   m_TagString: Untagged
@@ -435,6 +436,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 523929974}
   m_CullTransparentMesh: 1
+--- !u!114 &523929978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523929974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13340dd6b27364d8a88333c8b7f1acb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 523929976}
+  score: 0
 --- !u!1 &796299323
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,7 +708,6 @@ RectTransform:
   - {fileID: 2051552615}
   - {fileID: 1608912208}
   - {fileID: 817316744}
-  - {fileID: 1582674342}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -890,6 +904,7 @@ GameObject:
   - component: {fileID: 1396448340}
   - component: {fileID: 1396448339}
   - component: {fileID: 1396448338}
+  - component: {fileID: 1396448341}
   m_Layer: 5
   m_Name: ButtonRock
   m_TagString: Untagged
@@ -960,7 +975,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1396448339}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1396448341}
+        m_TargetAssemblyTypeName: RockPressed, Assembly-CSharp
+        m_MethodName: RockClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1396448339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -999,6 +1026,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1396448336}
   m_CullTransparentMesh: 1
+--- !u!114 &1396448341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396448336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c119e0b536c47a089bb8de390e79a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockSelect: 0
 --- !u!1 &1526551376
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,85 +1105,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1582674339
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1582674342}
-  - component: {fileID: 1582674341}
-  - component: {fileID: 1582674340}
-  m_Layer: 5
-  m_Name: CountDownText
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1582674340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1582674339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 100
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 1
-    m_MaxSize: 200
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: 4
---- !u!222 &1582674341
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1582674339}
-  m_CullTransparentMesh: 1
---- !u!224 &1582674342
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1582674339}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 908922474}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 360, y: 800}
-  m_SizeDelta: {x: 400, y: 300}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1608912207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1235,6 +1196,7 @@ GameObject:
   - component: {fileID: 1711562619}
   - component: {fileID: 1711562618}
   - component: {fileID: 1711562617}
+  - component: {fileID: 1711562620}
   m_Layer: 5
   m_Name: ButtonPaper
   m_TagString: Untagged
@@ -1305,7 +1267,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1711562618}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1711562620}
+        m_TargetAssemblyTypeName: PaperPressed, Assembly-CSharp
+        m_MethodName: PaperClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1711562618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1344,6 +1318,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1711562615}
   m_CullTransparentMesh: 1
+--- !u!114 &1711562620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711562615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd6045a3ba9f24842acc2f42763a2e7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paperSelect: 0
 --- !u!1 &1871656074
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,14 +1360,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c698868522cd944aba54d543791566df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdown: 4
   WinText: {fileID: 1608912207}
   LoseText: {fileID: 817316743}
   Rock: {fileID: 356341066}
   Paper: {fileID: 2136116324}
   Scissors: {fileID: 2031162914}
-  CountDownText: {fileID: 1582674340}
   random: 0
+  ButtonRock: {fileID: 1396448336}
+  ButtonPaper: {fileID: 1711562615}
+  ButtonScissors: {fileID: 2051552614}
+  ScoreText: {fileID: 523929974}
+  answered: 0
 --- !u!4 &1871656076
 Transform:
   m_ObjectHideFlags: 0
@@ -1482,6 +1472,7 @@ GameObject:
   - component: {fileID: 2051552618}
   - component: {fileID: 2051552617}
   - component: {fileID: 2051552616}
+  - component: {fileID: 2051552619}
   m_Layer: 5
   m_Name: ButtonScissors
   m_TagString: Untagged
@@ -1552,7 +1543,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2051552617}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2051552619}
+        m_TargetAssemblyTypeName: ScissorsPressed, Assembly-CSharp
+        m_MethodName: ScissorsClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2051552617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1591,6 +1594,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2051552614}
   m_CullTransparentMesh: 1
+--- !u!114 &2051552619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051552614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07679c77542a451499b6410a71e722f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scissorsSelect: 0
 --- !u!1 &2136116324
 GameObject:
   m_ObjectHideFlags: 0
