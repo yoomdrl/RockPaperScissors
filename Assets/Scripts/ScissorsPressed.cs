@@ -15,20 +15,11 @@ public class ScissorsPressed : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      // if(scissorsSelect == true)
-      // {
-      //   timer -= Time.deltaTime;
-      //   if(timer == 0.0)
-      //   {
-      //     scissorsSelect = false;
-      //     timer = 1.0f;
-      //   }
-      // }
+
     }
 
     public void ScissorsClick()
     {
       scissorsSelect = true;
-
     }
 }

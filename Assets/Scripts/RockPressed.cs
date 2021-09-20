@@ -15,22 +15,11 @@ public class RockPressed : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      // if(rockSelect == true)
-      // {
-      //   timer -= Time.deltaTime;
-      //   if(timer == 0.0)
-      //   {
-      //     rockSelect = false;
-      //     timer = 1.0f;
-      //   }
-      // }
+      
     }
 
     public void RockClick()
     {
-//      if(Input.GetMouseButtonDown(0))
-//      {
       rockSelect = true;
-//      }
     }
 }
