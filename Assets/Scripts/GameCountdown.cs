@@ -44,7 +44,7 @@ public class GameCountdown : MonoBehaviour
       ScoreText.text = score.ToString();
 
       //タイマーが0になるまで問題ワンセット
-      if(countdown > 0.0)
+      if(countdown > -0.1)
       {
         // if(countdown == 3.0)
         // {
@@ -119,7 +119,7 @@ public class GameCountdown : MonoBehaviour
           }
         }
 
-            //チョキだった時
+        //チョキだった時
         if(random == 2 && answered == 0)
         {
           if(ButtonRock.GetComponent<RockPressed>().rockSelect == true)
@@ -155,6 +155,9 @@ public class GameCountdown : MonoBehaviour
         Paper.SetActive(false);
         Scissors.SetActive(false);
         WinText.SetActive(false);
+        ButtonRock.GetComponent<RockPressed>().rockSelect = false;
+        ButtonPaper.GetComponent<PaperPressed>().paperSelect = false;
+        ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect = false;
         random = Random.Range(0, 3);
         a = 0;
       }

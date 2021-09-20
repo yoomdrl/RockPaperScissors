@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScissorsPressed : MonoBehaviour
 {
-    public float timer = 3.0f;
+//    public float timer = 1.0f;
     public bool scissorsSelect = false;
     // Start is called before the first frame update
     void Start()
@@ -15,20 +15,20 @@ public class ScissorsPressed : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      if(timer > 0.0)
-      {
-        timer -= Time.deltaTime;
-      }
-      if(timer == 0.0)
-      {
-        timer = 3.0f;
-        scissorsSelect = false;
-      }
-
+      // if(scissorsSelect == true)
+      // {
+      //   timer -= Time.deltaTime;
+      //   if(timer == 0.0)
+      //   {
+      //     scissorsSelect = false;
+      //     timer = 1.0f;
+      //   }
+      // }
     }
 
     public void ScissorsClick()
     {
       scissorsSelect = true;
+
     }
 }
