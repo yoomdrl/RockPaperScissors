@@ -17,7 +17,15 @@ public class GameCountdown : MonoBehaviour
     public GameObject ButtonRock;
     public GameObject ButtonPaper;
     public GameObject ButtonScissors;
+    public GameObject RestartButton;
+    public GameObject GameOverBlur;
+    public GameObject GameOverText;
+    public GameObject GameOverUI;
+    public GameObject GameOverUI2;
+    public GameObject RestartUI;
     public Text ScoreText;
+    public Text GameOverScoreText;
+    public Text GameOverHighScoreText;
     public int a = 0;
     public int handRandom;
     public int WinLoseRandom;
@@ -26,6 +34,9 @@ public class GameCountdown : MonoBehaviour
     public int incorrectSoundPlayed = 0;
     public int answered = 0;
     public int correct = 0;
+    public int highScore = 0;
+    public int restartActivated = 0;
+    public float GameOverDisplay = 0.0f;
     public float countdown = 3.0f;
 
     AudioSource audioSource;
@@ -48,7 +59,7 @@ public class GameCountdown : MonoBehaviour
       ScoreText.text = score.ToString();
 
       //タイマーが0になるまで問題ワンセット
-      if(countdown > -0.5)
+      if(countdown > -0.3)
       {
         countdown -= Time.deltaTime;
 
@@ -96,7 +107,7 @@ public class GameCountdown : MonoBehaviour
         }
 
         //プレイヤーが正しい選択肢を選ぶと次の問題にいける、外したら負け
-        if(countdown >= -0.5 && countdown <= 1.0)
+        if(countdown >= -0.2 && countdown <= 1.0)
         {
           //グーに勝て！だった時
           if(handRandom == 0 && answered == 0　&& WinLoseRandom == 0)
@@ -150,7 +161,6 @@ public class GameCountdown : MonoBehaviour
           if(ButtonRock.GetComponent<RockPressed>().rockSelect == true)
           {
             answered++;
-            score++;
             CorrectOption();
             Debug.Log("チョキに勝つグーCorrect");
           }
@@ -239,40 +249,79 @@ public class GameCountdown : MonoBehaviour
           }
       }
     }
+
+
+    //正解を出せた場合、次の問題に移行　要するにリセット
+    if(countdown < 0.2 && answered >= 1 && correct == 1)
+    {
+      reset();
+    }
+
+
       //未回答の場合負け
-      if(countdown < -0.5 && answered == 0)
+      if(countdown < -0.2 && answered == 0)
       {
         Debug.Log("TimeOutGameOver");
         InCorrectOption();
       }
-      //正解を出せた場合、次の問題に移行　要するにリセット
-      if(countdown < 0.0 && answered >= 1 && correct == 1)
-      {
-        countdown = 3.0f;
-        answered = 0;
-        correct = 0;
-        correctSoundPlayed = 0;
-        Rock.SetActive(false);
-        Paper.SetActive(false);
-        Scissors.SetActive(false);
-        WinText.SetActive(false);
-        LoseText.SetActive(false);
-        ButtonRock.GetComponent<RockPressed>().rockSelect = false;
-        ButtonPaper.GetComponent<PaperPressed>().paperSelect = false;
-        ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect = false;
-        handRandom = Random.Range(0, 3);
-        WinLoseRandom = Random.Range(0, 2);
-        a = 0;
-      }
-    }
 
-    public void InCorrectOption()
+      //ゲームオーバー画面の表示
+      if(incorrectSoundPlayed >= 1)
+      {
+        GameOverDisplay += Time.deltaTime;
+        if(GameOverDisplay > 1.0f)
+        {
+          GameOverBlur.SetActive(true);
+        }
+        if(GameOverDisplay > 2.0f)
+        {
+          GameOverText.SetActive(true);
+        }
+        if(GameOverDisplay > 3.0f)
+        {
+        GameOverUI.SetActive(true);
+        GameOverScoreText.text = "Score: " + score.ToString();
+        }
+        if(GameOverDisplay > 4.0f)
+        {
+          if(score > highScore)
+          {
+            highScore = score;
+            GameOverHighScoreText.text = "HighScore: " + highScore.ToString();
+          }
+          else
+          {
+            GameOverHighScoreText.text = "HighScore: " + highScore.ToString();
+          }
+          GameOverUI2.SetActive(true);
+        }
+        if(GameOverDisplay > 5.0f)
+        {
+          RestartUI.SetActive(true);
+        }
+      }
+
+      //リスタートボタンが押された時
+      if(RestartButton.GetComponent<RestartPressed>().restartSelect == true)
+      {
+        restartActivated++;
+        reset();
+        GameOverBlur.SetActive(false);
+        GameOverUI.SetActive(false);
+        GameOverUI2.SetActive(false);
+        RestartUI.SetActive(false);
+      }
+
+  }
+
+  public void InCorrectOption()
     {
       if(incorrectSoundPlayed == 0)
       {
         incorrectSoundPlayed++;
         audioSource.PlayOneShot(incorrectSound);
       }
+
     }
 
     public void CorrectOption()
@@ -286,4 +335,29 @@ public class GameCountdown : MonoBehaviour
       }
     }
 
+    public void reset()
+    {
+      countdown = 3.0f;
+      answered = 0;
+      correct = 0;
+      correctSoundPlayed = 0;
+      Rock.SetActive(false);
+      Paper.SetActive(false);
+      Scissors.SetActive(false);
+      WinText.SetActive(false);
+      LoseText.SetActive(false);
+      ButtonRock.GetComponent<RockPressed>().rockSelect = false;
+      ButtonPaper.GetComponent<PaperPressed>().paperSelect = false;
+      ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect = false;
+      handRandom = Random.Range(0, 3);
+      WinLoseRandom = Random.Range(0, 2);
+      a = 0;
+      restartActivated = 0;
+    }
+
 }
+
+
+//以下メモ
+//answeredと言うint値は一度の問題に2回以上回答することができないように設定されている
+//answeredとcorrectの両方の値が増えないと次の問題に行かない

@@ -9,7 +9,7 @@ public class GameStarter : MonoBehaviour
     public AudioClip start;
     public int a = 0;
     public float interval = 1.0f;
-    public bool countdown = false;
+    public bool countdownHard = false;
 
     AudioSource audioSource;
     // Start is called before the first frame update
@@ -21,7 +21,7 @@ public class GameStarter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      if(countdown == true)
+      if(countdownHard == true)
       {
         if(interval > 0.0f)
         {
@@ -30,7 +30,7 @@ public class GameStarter : MonoBehaviour
         if(interval < 0.0f)
         {
           interval = 1.0f;
-          SceneManager.LoadScene("Main");
+          SceneManager.LoadScene("Hard");
         }
       }
     }
@@ -41,7 +41,7 @@ public class GameStarter : MonoBehaviour
       {
         a++;
         audioSource.PlayOneShot(start);
-        countdown = true;
+        countdownHard = true;
       }
     }
 }

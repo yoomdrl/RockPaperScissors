@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RockPressed : MonoBehaviour
 {
-//    public float timer = 1.0f;
     public bool rockSelect = false;
     // Start is called before the first frame update
     void Start()
@@ -15,7 +14,7 @@ public class RockPressed : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
+
     }
 
     public void RockClick()
