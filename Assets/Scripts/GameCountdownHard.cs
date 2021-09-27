@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameCountdownHard : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class GameCountdownHard : MonoBehaviour
     public GameObject ButtonPaper;
     public GameObject ButtonScissors;
     public GameObject RestartButton;
+    public GameObject TitleScreenButton;
     public GameObject GameOverBlur;
     public GameObject GameOverText;
     public GameObject GameOverUI;
@@ -31,14 +33,17 @@ public class GameCountdownHard : MonoBehaviour
     public int handRandom;
     public int WinLoseRandom;
     public int score = 0;
+    public int scorePlusOne;
     public int correctSoundPlayed = 0;
     public int incorrectSoundPlayed = 0;
     public int answered = 0;
     public int correct = 0;
     public int highScore = 0;
     public int restartActivated = 0;
+    public int toTitleActivated = 0;
     public float GameOverDisplay = 0.0f;
     public float countdown = 3.0f;
+    public float speedup;
 
     AudioSource audioSource;
 
@@ -52,11 +57,13 @@ public class GameCountdownHard : MonoBehaviour
       ButtonPaper = GameObject.Find("ButtonPaper");
       ButtonScissors = GameObject.Find("ButtonScissors");
       audioSource = GetComponent<AudioSource>();
+      scorePlusOne = score + 1;
     }
 
     // Update is called once per frame
     void Update()
     {
+      speedup = Mathf.Pow(1.03f, scorePlusOne);
       ScoreText.text = score.ToString();
       TimeText.text = countdown.ToString();
 
@@ -317,6 +324,22 @@ public class GameCountdownHard : MonoBehaviour
         RestartButton.GetComponent<RestartPressed>().restartSelect = false;
       }
 
+      //タイトルボタンが押された時
+      if(TitleScreenButton.GetComponent<ToTitlePressed>().toTitleSelect == true)
+      {
+        toTitleActivated++;
+        reset();
+        GameOverBlur.SetActive(false);
+        GameOverUI.SetActive(false);
+        GameOverUI2.SetActive(false);
+        RestartUI.SetActive(false);
+        incorrectSoundPlayed = 0;
+        GameOverDisplay = 0;
+        score = 0;
+        SceneManager.LoadScene("Title");
+        TitleScreenButton.GetComponent<ToTitlePressed>().toTitleSelect = false;
+      }
+
   }
 
   public void InCorrectOption()
@@ -358,6 +381,7 @@ public class GameCountdownHard : MonoBehaviour
       WinLoseRandom = Random.Range(0, 2);
       a = 0;
       restartActivated = 0;
+      toTitleActivated = 0;
     }
 
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameCountdownExpert : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class GameCountdownExpert : MonoBehaviour
     public GameObject ButtonPaper;
     public GameObject ButtonScissors;
     public GameObject RestartButton;
+    public GameObject TitleScreenButton;
     public GameObject GameOverBlur;
     public GameObject GameOverText;
     public GameObject GameOverUI;
@@ -44,6 +46,7 @@ public class GameCountdownExpert : MonoBehaviour
     public int correct = 0;
     public int highScore = 0;
     public int restartActivated = 0;
+    public int toTitleActivated = 0;
     public float GameOverDisplay = 0.0f;
     public float countdown = 3.0f;
     public float speedup;
@@ -66,7 +69,7 @@ public class GameCountdownExpert : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      speedup = Mathf.Pow(1.02f, scorePlusOne);
+      speedup = Mathf.Pow(1.05f, scorePlusOne);
       ScoreText.text = score.ToString();
       TimeText.text = countdown.ToString();
 
@@ -274,6 +277,22 @@ public class GameCountdownExpert : MonoBehaviour
         RestartButton.GetComponent<RestartPressed>().restartSelect = false;
       }
 
+      //タイトルボタンが押された時
+      if(TitleScreenButton.GetComponent<ToTitlePressed>().toTitleSelect == true)
+      {
+        toTitleActivated++;
+        reset();
+        GameOverBlur.SetActive(false);
+        GameOverUI.SetActive(false);
+        GameOverUI2.SetActive(false);
+        RestartUI.SetActive(false);
+        incorrectSoundPlayed = 0;
+        GameOverDisplay = 0;
+        score = 0;
+        SceneManager.LoadScene("Title");
+        TitleScreenButton.GetComponent<ToTitlePressed>().toTitleSelect = false;
+      }
+
   }
 
   public void InCorrectOption()
@@ -283,7 +302,6 @@ public class GameCountdownExpert : MonoBehaviour
         incorrectSoundPlayed++;
         audioSource.PlayOneShot(incorrectSound);
       }
-
     }
 
     public void CorrectOption()
@@ -460,6 +478,7 @@ public class GameCountdownExpert : MonoBehaviour
       WinLoseRandom = Random.Range(0, 2);
       a = 0;
       restartActivated = 0;
+      toTitleActivated = 0;
     }
 
 }
