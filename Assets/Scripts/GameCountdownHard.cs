@@ -33,7 +33,6 @@ public class GameCountdownHard : MonoBehaviour
     public int handRandom;
     public int WinLoseRandom;
     public int score = 0;
-    public int scorePlusOne;
     public int correctSoundPlayed = 0;
     public int incorrectSoundPlayed = 0;
     public int answered = 0;
@@ -44,6 +43,7 @@ public class GameCountdownHard : MonoBehaviour
     public float GameOverDisplay = 0.0f;
     public float countdown = 3.0f;
     public float speedup;
+    // public float spedup;
 
     AudioSource audioSource;
 
@@ -57,20 +57,19 @@ public class GameCountdownHard : MonoBehaviour
       ButtonPaper = GameObject.Find("ButtonPaper");
       ButtonScissors = GameObject.Find("ButtonScissors");
       audioSource = GetComponent<AudioSource>();
-      scorePlusOne = score + 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-      speedup = Mathf.Pow(1.03f, scorePlusOne);
+      speedup = Mathf.Pow(1.02f, score);
       ScoreText.text = score.ToString();
       TimeText.text = countdown.ToString();
 
       //タイマーが0になるまで問題ワンセット
       if(countdown > -0.3)
       {
-        countdown -= Time.deltaTime;
+        countdown -= speedup * Time.deltaTime;
 
 
         //勝敗の指定の表示

@@ -31,7 +31,6 @@ public class GameCountdownNormal : MonoBehaviour
     public int a = 0;
     public int handRandom;
     public int score = 0;
-    public int scorePlusOne;
     public int correctSoundPlayed = 0;
     public int incorrectSoundPlayed = 0;
     public int answered = 0;
@@ -54,13 +53,11 @@ public class GameCountdownNormal : MonoBehaviour
       ButtonPaper = GameObject.Find("ButtonPaper");
       ButtonScissors = GameObject.Find("ButtonScissors");
       audioSource = GetComponent<AudioSource>();
-      scorePlusOne = score + 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-      speedup = Mathf.Pow(1.02f, scorePlusOne);
       ScoreText.text = score.ToString();
       TimeText.text = countdown.ToString();
 
