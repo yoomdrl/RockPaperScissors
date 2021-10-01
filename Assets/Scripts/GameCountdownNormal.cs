@@ -10,6 +10,8 @@ public class GameCountdownNormal : MonoBehaviour
     public AudioClip rhythm2;
     public AudioClip correctSound;
     public AudioClip incorrectSound;
+    public AudioClip Fanfare;
+    public AudioClip start;
     public GameObject WinText;
     public GameObject Rock;
     public GameObject Paper;
@@ -24,11 +26,15 @@ public class GameCountdownNormal : MonoBehaviour
     public GameObject GameOverUI;
     public GameObject GameOverUI2;
     public GameObject RestartUI;
+    public GameObject HighScoreUpdated;
+    public GameObject BGMPlayer;
     public Text ScoreText;
     public Text TimeText;
     public Text GameOverScoreText;
     public Text GameOverHighScoreText;
+    public bool startActivated = false;
     public int a = 0;
+    public int fanfareAwake = 0;
     public int handRandom;
     public int score = 0;
     public int correctSoundPlayed = 0;
@@ -38,9 +44,10 @@ public class GameCountdownNormal : MonoBehaviour
     public int highScore = 0;
     public int restartActivated = 0;
     public int toTitleActivated = 0;
+    public int highScoreUpdated = 0;
     public float GameOverDisplay = 0.0f;
     public float countdown = 3.0f;
-    public float speedup;
+    public float speed = 0.9f;
 
     AudioSource audioSource;
 
@@ -62,9 +69,9 @@ public class GameCountdownNormal : MonoBehaviour
       TimeText.text = countdown.ToString();
 
       //タイマーが0になるまで問題ワンセット
-      if(countdown > -0.3)
+      if(countdown > -0.2)
       {
-        countdown -= Time.deltaTime;
+        countdown -= Time.deltaTime * speed;
 
 
         //勝敗の指定の表示
@@ -76,6 +83,12 @@ public class GameCountdownNormal : MonoBehaviour
             a++;
           }
           WinText.SetActive(true);
+          if(countdown > 1.0)
+          {
+            ButtonRock.GetComponent<RockPressed>().rockSelect = false;
+            ButtonPaper.GetComponent<PaperPressed>().paperSelect = false;
+            ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect = false;
+          }
         }
 
 
@@ -107,42 +120,46 @@ public class GameCountdownNormal : MonoBehaviour
           //グーに勝て！だった時
           if(handRandom == 0 && answered == 0)
           {
-            if(ButtonRock.GetComponent<RockPressed>().rockSelect == true)
+            if(ButtonRock.GetComponent<RockPressed>().rockSelect == true || Input.GetKeyDown(KeyCode.S))
             {
               answered++;
               InCorrectOption();
               Debug.Log("グーに勝つグーInCorrectGameOver");
+              BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
             }
-            if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true)
+            if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true || Input.GetKeyDown(KeyCode.D))
             {
               answered++;
               CorrectOption();
               Debug.Log("グーに勝つパーCorrect");
             }
-            if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true)
+            if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true || Input.GetKeyDown(KeyCode.A))
             {
               answered++;
               InCorrectOption();
               Debug.Log("グーに勝つチョキInCorrectGameOver");
+              BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
             }
           }
 
         //パーに勝て！だった時
         if(handRandom == 1 && answered == 0)
         {
-          if(ButtonRock.GetComponent<RockPressed>().rockSelect == true)
+          if(ButtonRock.GetComponent<RockPressed>().rockSelect == true || Input.GetKeyDown(KeyCode.S))
           {
             answered++;
             InCorrectOption();
             Debug.Log("パーに勝つグーInCorrectGameOver");
+            BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
           }
-          if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true)
+          if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true || Input.GetKeyDown(KeyCode.D))
           {
             answered++;
             InCorrectOption();
             Debug.Log("パーに勝つパーInCorrectGameOver");
+            BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
           }
-          if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true)
+          if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true || Input.GetKeyDown(KeyCode.A))
           {
             answered++;
             CorrectOption();
@@ -153,23 +170,25 @@ public class GameCountdownNormal : MonoBehaviour
         //チョキに勝て！だった時
         if(handRandom == 2 && answered == 0)
         {
-          if(ButtonRock.GetComponent<RockPressed>().rockSelect == true)
+          if(ButtonRock.GetComponent<RockPressed>().rockSelect == true || Input.GetKeyDown(KeyCode.S))
           {
             answered++;
             CorrectOption();
             Debug.Log("チョキに勝つグーCorrect");
           }
-          if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true)
+          if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true || Input.GetKeyDown(KeyCode.D))
           {
             answered++;
             InCorrectOption();
             Debug.Log("チョキに勝つパーInCorrectGameOver");
+            BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
           }
-          if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true)
+          if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true || Input.GetKeyDown(KeyCode.A))
           {
             answered++;
             InCorrectOption();
             Debug.Log("チョキに勝つチョキInCorrectGameOver");
+            BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
           }
         }
       }
@@ -184,15 +203,17 @@ public class GameCountdownNormal : MonoBehaviour
 
 
       //未回答の場合負け
-      if(countdown < -0.2 && answered == 0)
+      if(countdown < -0.1 && answered == 0)
       {
         Debug.Log("TimeOutGameOver");
         InCorrectOption();
+        BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
       }
 
       //ゲームオーバー画面の表示
       if(incorrectSoundPlayed >= 1)
       {
+        startActivated = false;
         GameOverDisplay += Time.deltaTime;
         if(GameOverDisplay > 1.0f)
         {
@@ -212,6 +233,7 @@ public class GameCountdownNormal : MonoBehaviour
           if(score > highScore)
           {
             highScore = score;
+            highScoreUpdated++;
             GameOverHighScoreText.text = "HighScore: " + highScore.ToString();
           }
           else
@@ -223,6 +245,12 @@ public class GameCountdownNormal : MonoBehaviour
         if(GameOverDisplay > 5.0f)
         {
           RestartUI.SetActive(true);
+          if(highScoreUpdated == 1 && fanfareAwake == 0)
+          {
+            audioSource.PlayOneShot(Fanfare);
+            HighScoreUpdated.SetActive(true);
+            fanfareAwake++;
+          }
         }
       }
 
@@ -239,6 +267,13 @@ public class GameCountdownNormal : MonoBehaviour
         GameOverDisplay = 0;
         score = 0;
         RestartButton.GetComponent<RestartPressed>().restartSelect = false;
+        BGMPlayer.GetComponent<BGMPlayer>().a = 0;
+        BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = true;
+        if(startActivated == false)
+        {
+          audioSource.PlayOneShot(start);
+          startActivated = true;
+        }
       }
 
       //タイトルボタンが押された時
@@ -290,6 +325,7 @@ public class GameCountdownNormal : MonoBehaviour
       Paper.SetActive(false);
       Scissors.SetActive(false);
       WinText.SetActive(false);
+      GameOverText.SetActive(false);
       ButtonRock.GetComponent<RockPressed>().rockSelect = false;
       ButtonPaper.GetComponent<PaperPressed>().paperSelect = false;
       ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect = false;
@@ -297,6 +333,8 @@ public class GameCountdownNormal : MonoBehaviour
       a = 0;
       restartActivated = 0;
       toTitleActivated = 0;
+      highScoreUpdated = 0;
+      fanfareAwake = 0;
     }
 
 }

@@ -10,6 +10,9 @@ public class ReGameCountdownExpert : MonoBehaviour
     public AudioClip rhythm2;
     public AudioClip correctSound;
     public AudioClip incorrectSound;
+    public AudioClip Fanfare;
+    public AudioClip gamebgm;
+    public AudioClip start;
     public GameObject WinText;
     public GameObject LoseText;
     public GameObject TieText;
@@ -32,23 +35,28 @@ public class ReGameCountdownExpert : MonoBehaviour
     public GameObject GameOverUI;
     public GameObject GameOverUI2;
     public GameObject RestartUI;
+    public GameObject HighScoreUpdated;
+    public GameObject BGMPlayer;
     public Text ScoreText;
     public Text TimeText;
     public Text GameOverScoreText;
     public Text GameOverHighScoreText;
+    public bool answered = false;
+    public bool correct = false;
+    public bool correctSoundPlayed = false;
+    public bool incorrectSoundPlayed = false;
+    public bool startActivated = false;
     public int a = 0;
-    public float handRandom;
+    public int fanfareAwake = 0;
     public int handShown = 0;
     public int WinLoseShown = 0;
     public int WinLoseRandom;
     public int score = 0;
-    public int correctSoundPlayed = 0;
-    public int incorrectSoundPlayed = 0;
-    public int answered = 0;
-    public int correct = 0;
     public int highScore = 0;
     public int restartActivated = 0;
     public int toTitleActivated = 0;
+    public int highScoreUpdated = 0;
+    public float handRandom;
     public float GameOverDisplay = 0.0f;
     public float countdown = 3.0f;
     public float speedup;
@@ -68,7 +76,7 @@ public class ReGameCountdownExpert : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      speedup = Mathf.Pow(1.05f, score);
+      speedup = Mathf.Pow(1.025f, score);
       ScoreText.text = score.ToString();
       TimeText.text = countdown.ToString();
 
@@ -110,6 +118,12 @@ public class ReGameCountdownExpert : MonoBehaviour
             }
             handShown++;
           }
+          if(countdown > 1.0)
+          {
+            ButtonRock.GetComponent<RockPressed>().rockSelect = false;
+            ButtonPaper.GetComponent<PaperPressed>().paperSelect = false;
+            ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect = false;
+          }
         }
 
 
@@ -141,35 +155,50 @@ public class ReGameCountdownExpert : MonoBehaviour
             //WinLoseRandomが2(引き分けろ！)だった場合
             if(WinLoseRandom == 2)
             {
-              if(handRandom >= 3.0f && handRandom < 3.16f)
+              if(handRandom >= 3.0f && handRandom < 3.111f)
               {
                 TieRock.SetActive(true);
                 Debug.Log("PaperScissorsShown");
               }
-              if(handRandom >= 3.16f && handRandom < 3.33f)
+              if(handRandom >= 3.111f && handRandom < 3.222f)
               {
                 TiePaper.SetActive(true);
                 Debug.Log("RockScissorsShown");
               }
-              if(handRandom >= 3.33f && handRandom < 3.50f)
+              if(handRandom >= 3.222f && handRandom < 3.333f)
               {
                 TieScissors.SetActive(true);
                 Debug.Log("PaperRockShown");
               }
-              if(handRandom >= 3.50f && handRandom < 3.66f)
+              if(handRandom >= 3.333f && handRandom < 3.444f)
               {
                 TieRock1.SetActive(true);
                 Debug.Log("ScissorsPaperShown");
               }
-              if(handRandom >= 3.66f && handRandom < 3.83f)
+              if(handRandom >= 3.444f && handRandom < 3.555f)
               {
                 TiePaper1.SetActive(true);
                 Debug.Log("ScissorsRockShown");
               }
-              if(handRandom >= 3.83f && handRandom < 4.0f)
+              if(handRandom >= 3.555f && handRandom < 3.666f)
               {
                 TieScissors1.SetActive(true);
                 Debug.Log("RockPaperShown");
+              }
+              if(handRandom >= 3.666f && handRandom < 3.777f)
+              {
+                Rock.SetActive(true);
+                Debug.Log("RockShown");
+              }
+              if(handRandom >= 3.777f && handRandom < 3.888f)
+              {
+                Paper.SetActive(true);
+                Debug.Log("PaperShown");
+              }
+              if(handRandom >= 3.888f && handRandom < 4.00f)
+              {
+                Scissors.SetActive(true);
+                Debug.Log("ScissorsShown");
               }
             }
           }
@@ -179,89 +208,105 @@ public class ReGameCountdownExpert : MonoBehaviour
         if(countdown >= -0.2 && countdown <= 1.0)
         {
           //グーに勝て！だった場合
-          if(handRandom >= 0.0f && handRandom < 1.0f && answered == 0 && WinLoseRandom == 0)
+          if(handRandom >= 0.0f && handRandom < 1.0f && answered == false && WinLoseRandom == 0)
           {
             IfPaperCorrect();
           }
           //パーに勝て！だった時
-          if(handRandom >= 1.0f && handRandom < 2.0f && answered == 0　&& WinLoseRandom == 0)
+          if(handRandom >= 1.0f && handRandom < 2.0f && answered == false　&& WinLoseRandom == 0)
           {
             IfScissorsCorrect();
           }
         //チョキに勝て！だった時
-          if(handRandom >= 2.0f && handRandom < 3.0f && answered == 0　&& WinLoseRandom == 0)
+          if(handRandom >= 2.0f && handRandom < 3.0f && answered == false && WinLoseRandom == 0)
           {
             IfRockCorrect();
           }
 
           //グーに負けろ！だった時
-          if(handRandom >= 0.0f && handRandom < 1.0f && answered == 0 && WinLoseRandom == 1)
+          if(handRandom >= 0.0f && handRandom < 1.0f && answered == false && WinLoseRandom == 1)
           {
             IfScissorsCorrect();
           }
           //パーに負けろ！だった時
-          if(handRandom >= 1.0f && handRandom < 2.0f && answered == 0 && WinLoseRandom == 1)
+          if(handRandom >= 1.0f && handRandom < 2.0f && answered == false && WinLoseRandom == 1)
           {
             IfRockCorrect();
           }
           //チョキに負けろ！だった時
-          if(handRandom >= 2.0f && handRandom < 3.0f && answered == 0 && WinLoseRandom == 1)
+          if(handRandom >= 2.0f && handRandom < 3.0f && answered == false && WinLoseRandom == 1)
           {
             IfPaperCorrect();
           }
 
-          //グーに引き分けろ！だった時
-          if(handRandom >= 3.00f && handRandom < 3.16f && answered == 0 && WinLoseRandom == 2)
+          //チョキパーに引き分けろ！だった時
+          if(handRandom >= 3.00f && handRandom < 3.111f && answered == false && WinLoseRandom == 2)
+          {
+            IfRockCorrect();
+          }
+          //グーチョキに引き分けろ！だった場合
+          if(handRandom >= 3.111f && handRandom < 3.222f && answered == false && WinLoseRandom == 2)
+          {
+            IfPaperCorrect();
+          }
+          //グーパーに引き分けろ！だった場合
+          if(handRandom >= 3.222f && handRandom < 3.333f && answered == false && WinLoseRandom == 2)
+          {
+            IfScissorsCorrect();
+          }
+          //パーチョキに引き分けろ！だった時
+          if(handRandom >= 3.333f && handRandom < 3.444f && answered == false && WinLoseRandom == 2)
+          {
+            IfRockCorrect();
+          }
+          //チョキぐーに引き分けろ！だった場合
+          if(handRandom >= 3.444f && handRandom < 3.555f && answered == false && WinLoseRandom == 2)
+          {
+            IfPaperCorrect();
+          }
+          //パーグーに引き分けろ！だった場合
+          if(handRandom >= 3.555f && handRandom < 3.666f && answered == false && WinLoseRandom == 2)
+          {
+            IfScissorsCorrect();
+          }
+          //グーに引き分けろ！だった場合
+          if(handRandom >= 3.666f && handRandom < 3.777f && answered == false && WinLoseRandom == 2)
           {
             IfRockCorrect();
           }
           //パーに引き分けろ！だった場合
-          if(handRandom >= 3.16f && handRandom < 3.33f && answered == 0 && WinLoseRandom == 2)
+          if(handRandom >= 3.777f && handRandom < 3.888f && answered == false && WinLoseRandom == 2)
           {
             IfPaperCorrect();
           }
           //チョキに引き分けろ！だった場合
-          if(handRandom >= 3.33f && handRandom < 3.50f && answered == 0 && WinLoseRandom == 2)
+          if(handRandom >= 3.888f && handRandom < 4.000f && answered == false && WinLoseRandom == 2)
           {
             IfScissorsCorrect();
           }
-          //グー1に引き分けろ！だった時
-          if(handRandom >= 3.50f && handRandom < 3.66f && answered == 0 && WinLoseRandom == 2)
-          {
-            IfRockCorrect();
-          }
-          //パー1に引き分けろ！だった場合
-          if(handRandom >= 3.66f && handRandom < 3.83f && answered == 0 && WinLoseRandom == 2)
-          {
-            IfPaperCorrect();
-          }
-          //チョキ1に引き分けろ！だった場合
-          if(handRandom >= 3.83f && handRandom < 4.00f && answered == 0 && WinLoseRandom == 2)
-          {
-            IfScissorsCorrect();
-          }
-
       }
     }
 
 
     //正解を出せた場合、次の問題に移行　要するにリセット
-    if(countdown < 0.2 && answered >= 1 && correct == 1)
+    if(countdown < 0.2 && answered == true && correct == true)
     {
       reset();
     }
 
 
       //未回答の場合負け
-      if(countdown < -0.2 && answered == 0)
+      if(countdown < -0.2 && answered == false)
       {
         Debug.Log("TimeOutGameOver");
         InCorrectOption();
+        BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
       }
 
       //ゲームオーバー画面の表示
-      if(incorrectSoundPlayed >= 1)
+      if(incorrectSoundPlayed == true)
       {
+        startActivated = false;
         GameOverDisplay += Time.deltaTime;
         if(GameOverDisplay > 1.0f)
         {
@@ -281,6 +326,7 @@ public class ReGameCountdownExpert : MonoBehaviour
           if(score > highScore)
           {
             highScore = score;
+            highScoreUpdated++;
             GameOverHighScoreText.text = "HighScore: " + highScore.ToString();
           }
           else
@@ -292,6 +338,12 @@ public class ReGameCountdownExpert : MonoBehaviour
         if(GameOverDisplay > 5.0f)
         {
           RestartUI.SetActive(true);
+          if(highScoreUpdated == 1 && fanfareAwake == 0)
+          {
+            audioSource.PlayOneShot(Fanfare);
+            HighScoreUpdated.SetActive(true);
+            fanfareAwake++;
+          }
         }
       }
 
@@ -304,10 +356,17 @@ public class ReGameCountdownExpert : MonoBehaviour
         GameOverUI.SetActive(false);
         GameOverUI2.SetActive(false);
         RestartUI.SetActive(false);
-        incorrectSoundPlayed = 0;
+        incorrectSoundPlayed = false;
         GameOverDisplay = 0;
         score = 0;
         RestartButton.GetComponent<RestartPressed>().restartSelect = false;
+        BGMPlayer.GetComponent<BGMPlayer>().a = 0;
+        BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = true;
+        if(startActivated == false)
+        {
+          audioSource.PlayOneShot(start);
+          startActivated = true;
+        }
       }
 
       //タイトルボタンが押された時
@@ -319,7 +378,7 @@ public class ReGameCountdownExpert : MonoBehaviour
         GameOverUI.SetActive(false);
         GameOverUI2.SetActive(false);
         RestartUI.SetActive(false);
-        incorrectSoundPlayed = 0;
+        incorrectSoundPlayed = false;
         GameOverDisplay = 0;
         score = 0;
         SceneManager.LoadScene("Title");
@@ -330,9 +389,9 @@ public class ReGameCountdownExpert : MonoBehaviour
 
   public void InCorrectOption()
     {
-      if(incorrectSoundPlayed == 0)
+      if(incorrectSoundPlayed == false)
       {
-        incorrectSoundPlayed++;
+        incorrectSoundPlayed = true;
         audioSource.PlayOneShot(incorrectSound);
       }
 
@@ -340,75 +399,81 @@ public class ReGameCountdownExpert : MonoBehaviour
 
     public void CorrectOption()
     {
-      correct++;
+      correct = true;
       score++;
-      if(correctSoundPlayed == 0)
+      if(correctSoundPlayed == false)
       {
-        correctSoundPlayed++;
+        correctSoundPlayed = true;
         audioSource.PlayOneShot(correctSound);
       }
     }
 
     public void IfRockCorrect()
     {
-      if(ButtonRock.GetComponent<RockPressed>().rockSelect == true)
+      if(ButtonRock.GetComponent<RockPressed>().rockSelect == true || Input.GetKeyDown(KeyCode.S))
       {
-        answered++;
+        answered = true;
         CorrectOption();
         Debug.Log("グーにグーCorrect");
       }
-      if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true)
+      if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true || Input.GetKeyDown(KeyCode.D))
       {
-        answered++;
+        answered = true;
         InCorrectOption();
         Debug.Log("グーにパーInCorrectGameOver");
+        BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
       }
-      if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true)
+      if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true || Input.GetKeyDown(KeyCode.A))
       {
-        answered++;
+        answered = true;
         InCorrectOption();
         Debug.Log("グーにチョキInCorrectGameOver");
+        BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
       }
     }
     public void IfPaperCorrect()
     {
-      if(ButtonRock.GetComponent<RockPressed>().rockSelect == true)
+      if(ButtonRock.GetComponent<RockPressed>().rockSelect == true || Input.GetKeyDown(KeyCode.S))
       {
-        answered++;
+        answered = true;
         InCorrectOption();
+        BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
         Debug.Log("パーにグーInCorrectGameOver");
       }
-      if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true)
+      if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true || Input.GetKeyDown(KeyCode.D))
       {
-        answered++;
+        answered = true;
         CorrectOption();
         Debug.Log("パーにパーCorrect");
       }
-      if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true)
+      if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true || Input.GetKeyDown(KeyCode.A))
       {
-        answered++;
+        answered = true;
         InCorrectOption();
         Debug.Log("パーにチョキInCorrectGameOver");
+        BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
       }
     }
 
     public void IfScissorsCorrect()
     {
-      if(ButtonRock.GetComponent<RockPressed>().rockSelect == true)
+      if(ButtonRock.GetComponent<RockPressed>().rockSelect == true || Input.GetKeyDown(KeyCode.S))
       {
-        answered++;
+        answered = true;
         InCorrectOption();
         Debug.Log("チョキにグーInCorrectGameOver");
+        BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
       }
-      if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true)
+      if(ButtonPaper.GetComponent<PaperPressed>().paperSelect == true || Input.GetKeyDown(KeyCode.D))
       {
-        answered++;
+        answered = true;
         InCorrectOption();
         Debug.Log("チョキにパーInCorrectGameOver");
+        BGMPlayer.GetComponent<BGMPlayer>().bgmPlaying = false;
       }
-      if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true)
+      if(ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect == true || Input.GetKeyDown(KeyCode.A))
       {
-        answered++;
+        answered = true;
         CorrectOption();
         Debug.Log("チョキCorrect");
       }
@@ -417,11 +482,11 @@ public class ReGameCountdownExpert : MonoBehaviour
     public void reset()
     {
       countdown = 3.0f;
-      answered = 0;
-      correct = 0;
+      answered = false;
+      correct = false;
       handShown = 0;
       WinLoseShown = 0;
-      correctSoundPlayed = 0;
+      correctSoundPlayed = false;
       Rock.SetActive(false);
       Paper.SetActive(false);
       Scissors.SetActive(false);
@@ -434,12 +499,16 @@ public class ReGameCountdownExpert : MonoBehaviour
       WinText.SetActive(false);
       LoseText.SetActive(false);
       TieText.SetActive(false);
+      GameOverText.SetActive(false);
+      HighScoreUpdated.SetActive(false);
       ButtonRock.GetComponent<RockPressed>().rockSelect = false;
       ButtonPaper.GetComponent<PaperPressed>().paperSelect = false;
       ButtonScissors.GetComponent<ScissorsPressed>().scissorsSelect = false;
       a = 0;
       restartActivated = 0;
       toTitleActivated = 0;
+      highScoreUpdated = 0;
+      fanfareAwake = 0;
     }
 
 }
